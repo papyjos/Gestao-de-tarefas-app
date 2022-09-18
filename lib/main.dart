@@ -35,10 +35,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class task extends StatelessWidget {
+class task extends StatefulWidget {
   final String nome;
   const task(this.nome, {super.key});
 
+  @override
+  State<task> createState() => _taskState();
+}
+
+class _taskState extends State<task> {
+  int nivel = 0;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,22 +56,38 @@ class task extends StatelessWidget {
               color: Colors.blue,
               height: 140,
             ),
-            Container(
-              color: Colors.white,
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    color: Colors.grey,
-                    width: 72,
+            Column(
+              children: [
+                Container(
+                  color: Colors.white,
+                  height: 100,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        color: Colors.grey,
+                        width: 72,
+                      ),
+                      Text(
+                        widget.nome,
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              nivel++;
+                            });
+                          },
+                          child: Icon(Icons.arrow_drop_up))
+                    ],
                   ),
-                  Text(nome),
-                  ElevatedButton(
-                      onPressed: () {}, child: Icon(Icons.arrow_drop_up))
-                ],
-              ),
-            )
+                ),
+                Text(
+                  "Nivel:$nivel",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )
+              ],
+            ),
           ],
         ),
       ),
