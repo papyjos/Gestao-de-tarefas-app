@@ -1,5 +1,4 @@
-// ignore_for_file: file_names
-
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class Difficulty extends StatefulWidget {

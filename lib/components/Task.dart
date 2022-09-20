@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:primeiroapp/components/Difficulty.dart';
+import 'package:primeiroapp/components/levelchange.dart';
 
 class task extends StatefulWidget {
   final String nome;
@@ -15,17 +16,14 @@ class task extends StatefulWidget {
 
 class _taskState extends State<task> {
   int nivel = 0;
+  int mudarcor = 0;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.blue),
-            height: 140,
-          ),
+          changecolor(mudarcor, widget.dificuldade),
           Column(
             children: [
               Container(
@@ -75,7 +73,13 @@ class _taskState extends State<task> {
                         child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                nivel++;
+                                if (nivel < (widget.dificuldade * 10)) {
+                                  nivel++;
+                                  nivel / widget.dificuldade * 0.1;
+                                } else {
+                                  nivel = 0;
+                                  mudarcor++;
+                                }
                               });
                             },
                             child: Column(
@@ -95,26 +99,33 @@ class _taskState extends State<task> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8),
                     child: SizedBox(
                       width: 200,
                       child: LinearProgressIndicator(
                         color: Colors.white,
                         value: (widget.dificuldade >= 0)
-                            ? (nivel / widget.dificuldade) / 10
+                            ? nivel / widget.dificuldade * 0.1
                             : 1,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      "Nivel:$nivel",
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        "Nivel:$nivel",
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      Text(
+                        "Maestria:$mudarcor",
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ],
                   ),
                 ],
               ),
