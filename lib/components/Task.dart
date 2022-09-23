@@ -8,7 +8,7 @@ class task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
-  const task(this.nome, this.foto, this.dificuldade, {super.key});
+  task(this.nome, this.foto, this.dificuldade, {super.key});
 
   @override
   State<task> createState() => _taskState();
@@ -17,6 +17,14 @@ class task extends StatefulWidget {
 class _taskState extends State<task> {
   int nivel = 0;
   int mudarcor = 0;
+
+  bool assetornetwork() {
+    if (widget.foto.contains("http")) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,12 +49,16 @@ class _taskState extends State<task> {
                       width: 72,
                       height: 100,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(20),
+                          child: assetornetwork()
+                              ? Image.asset(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                )),
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
