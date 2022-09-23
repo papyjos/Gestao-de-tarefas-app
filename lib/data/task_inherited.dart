@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:primeiroapp/components/Task.dart';
+import 'package:nosso_primeiro_projeto/components/task.dart';
 
 class TaskInherited extends InheritedWidget {
   TaskInherited({
@@ -7,15 +7,16 @@ class TaskInherited extends InheritedWidget {
     required Widget child,
   }) : super(key: key, child: child);
 
-  final List<task> tasklist = [
-    task('Aprender Flutter', "assets/images/dash.png", 3),
-    task('Andar de Bike', "assets/images/bike.webp", 2),
-    task('Meditar', "assets/images/meditar.jpeg", 4),
-    task('Ler', "assets/images/livro.jpg", 5),
-    task("Jogar", "assets/images/jogar.jpg", 1),
+  final List<Task> taskList = [
+    Task('Aprender Flutter', 'assets/images/dash.png', 3),
+    Task('Andar de Bike', 'assets/images/bike.webp', 2),
+    Task('Meditar', 'assets/images/meditar.jpeg', 5),
+    Task('Ler', 'assets/images/livro.jpg', 4),
+    Task('Jogar', 'assets/images/jogar.jpg', 1),
   ];
-  void newTask(String name, String photo, int difficulty) {
-    tasklist.add(task(name, photo, difficulty));
+
+  void newTask(String name, String photo,int difficulty){
+    taskList.add(Task(name, photo, difficulty));
   }
 
   static TaskInherited of(BuildContext context) {
@@ -26,7 +27,7 @@ class TaskInherited extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(TaskInherited old) {
-    return old.tasklist.length != tasklist.length;
+  bool updateShouldNotify(TaskInherited oldWidget) {
+    return oldWidget.taskList.length != taskList.length;
   }
 }

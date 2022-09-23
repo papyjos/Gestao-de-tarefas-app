@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:primeiroapp/data/task_inherited.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({Key? key, required this.taskcontext}) : super(key: key);
+  const FormScreen({Key? key, required this.taskContext}) : super(key: key);
 
-  final BuildContext taskcontext;
+  final BuildContext taskContext;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -14,14 +14,23 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController difficultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
-  bool valueValidator(String? value) {
-    if (value != null && value.isEmpty) {
-      return true;
-    } else {
-      return false;
+  bool valueValidator(String? value){
+     if(value != null && value.isEmpty){
+       return true;
+     }
+     return false;
+  }
+  bool difficultyValidator(String? value){
+    if(value != null && value.isEmpty){
+      if(int.parse(value) > 5 ||
+          int.parse(value) < 1){
+        return true;
+      }
     }
+    return false;
   }
 
   @override
@@ -51,14 +60,13 @@ class _FormScreenState extends State<FormScreen> {
                     child: TextFormField(
                       validator: (String? value) {
                         if (valueValidator(value)) {
-                          return "Insira o nome da tarefa";
-                        } else {
-                          return null;
+                          return 'Insira o nome da Tarefa';
                         }
+                        return null;
                       },
                       controller: nameController,
                       textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Nome',
                         fillColor: Colors.white70,
@@ -70,20 +78,16 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (value) {
-                        if (value!.isEmpty ||
-                            int.parse(value) > 5 ||
-                            int.parse(value) < 1) {
-                          return "Insira a dificuldade da tarefa";
-                        } else {
-                          return null;
+                        if (difficultyValidator(value)) {
+                          return 'Insira um Dificuldade entre 1 e 5';
                         }
+                        return null;
                       },
                       keyboardType: TextInputType.number,
                       controller: difficultyController,
                       textAlign: TextAlign.center,
-                      // ignore: prefer_const_constructors
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         hintText: 'Dificuldade',
                         fillColor: Colors.white70,
                         filled: true,
@@ -93,22 +97,20 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      validator: (String? value) {
-                        if (valueValidator(value)) {
-                          return "Insira a imagem da tarefa";
-                        } else {
-                          return null;
-                        }
-                      },
                       onChanged: (text) {
                         setState(() {});
+                      },
+                      validator: (value) {
+                        if (valueValidator(value)) {
+                          return 'Insira um URL de Imagem!';
+                        }
+                        return null;
                       },
                       keyboardType: TextInputType.url,
                       controller: imageController,
                       textAlign: TextAlign.center,
-                      // ignore: prefer_const_constructors
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         hintText: 'Imagem',
                         fillColor: Colors.white70,
                         filled: true,
@@ -129,7 +131,7 @@ class _FormScreenState extends State<FormScreen> {
                         imageController.text,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
-                          return Image.asset('assets/images/nophoto.jpg');
+                          return Image.asset('assets/images/nophoto.png');
                         },
                         fit: BoxFit.cover,
                       ),
@@ -138,17 +140,22 @@ class _FormScreenState extends State<FormScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        TaskInherited.of(widget.taskcontext).newTask(
+                        // print(nameController.text);
+                        // print(difficultyController.text);
+                        // print(imageController.text);
+                        TaskInherited.of(widget.taskContext).newTask(
                             nameController.text,
                             imageController.text,
                             int.parse(difficultyController.text));
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Salvando nova tarefa")));
+                          const SnackBar(
+                            content: Text('Criando uma nova Tarefa'),
+                          ),
+                        );
+                        Navigator.pop(context);
                       }
-                      Navigator.pop(context);
                     },
-                    child: const Text('Adicionar!'),
+                    child: Text('Adicionar!'),
                   ),
                 ],
               ),
